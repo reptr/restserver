@@ -5,6 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 // This can be removed if you use __autoload() in config.php OR use Modular Extensions
 /** @noinspection PhpIncludeInspection */
 //To Solve File REST_Controller not found
+require APPPATH . 'libraries/REST_Controller_Definitions.php';
 require APPPATH . 'libraries/REST_Controller.php';
 require APPPATH . 'libraries/Format.php';
 
@@ -19,12 +20,18 @@ require APPPATH . 'libraries/Format.php';
  * @license         MIT
  * @link            https://github.com/chriskacerguis/codeigniter-restserver
  */
-class Example extends REST_Controller {
+// class Example extends REST_Controller {
+class Example extends CI_Controller{
+
+    use REST_Controller {
+        REST_Controller::__construct as private __resTraitConstruct;
+    }
 
     function __construct()
     {
         // Construct the parent class
         parent::__construct();
+        $this->__resTraitConstruct();
 
         // Configure limits on our controller methods
         // Ensure you have created the 'limits' table and enabled 'limits' within application/config/rest.php
@@ -52,7 +59,8 @@ class Example extends REST_Controller {
             if ($users)
             {
                 // Set the response and exit
-                $this->response($users, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
+                // $this->response($users, REST_Controller::HTTP_OK); // OK (200) being the HTTP response code
+                $this->response($users, 200);
             }
             else
             {
